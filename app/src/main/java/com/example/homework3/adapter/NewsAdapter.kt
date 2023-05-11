@@ -34,25 +34,6 @@ class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return NewsViewHolder.create(parent, viewType)
     }
-    /*
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : NewsViewHolder{
-        Log.e(logTag, "ON CREATE VIEWHOLDER")
-        val binding = when(viewType) {
-            R.layout.first_news_item -> {
-                FirstNewsItemBinding.inflate(
-                    LayoutInflater.from(context), parent, false
-                )
-            }
-            else -> {
-                NewsItemBinding.inflate(
-                    LayoutInflater.from(context), parent, false
-                )
-            }
-        }
-        return NewsViewHolder(binding)
-    }
-
-    */
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         Log.e(logTag, "ON BIND VIEWHOLDER $position")
@@ -62,11 +43,17 @@ class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.
 
         if(displayImage){
             val imageView = holder.itemView.findViewById<ImageView>(R.id.imageView2)
+            val imageView2 = holder.itemView.findViewById<ImageView>(R.id.imageView)
             imageView?.visibility = View.VISIBLE
+            imageView2?.visibility = View.VISIBLE
 
         } else {
             val imageView = holder.itemView.findViewById<ImageView>(R.id.imageView2)
+            val imageView2 = holder.itemView.findViewById<ImageView>(R.id.imageView)
+
             imageView?.visibility = View.GONE
+            imageView2?.visibility = View.GONE
+
         }
     }
 
@@ -88,6 +75,8 @@ class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.
             when(binding){
                 is NewsItemBinding -> {
                     binding.title.text = item.title
+                    binding.author.text = item.creator
+                    binding.date.text = item.pubDate.toString()
                 }
                 is FirstNewsItemBinding -> {
                     binding.title.text = item.title

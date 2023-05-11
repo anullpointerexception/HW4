@@ -2,6 +2,7 @@ package com.example.homework3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.preference.PreferenceManager
 import com.example.homework3.adapter.NewsAdapter
@@ -18,9 +19,20 @@ class DetailViewActivity : AppCompatActivity() {
         binding = ActivityDetailViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val RSSInfo = intent.getSerializableExtra("RSSInfo") as Item
 
+        val htmlContent = RSSInfo.description
+
+        val convertedHTML = if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N){
+            Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(htmlContent)
+        }
+
         binding.title.text = RSSInfo.title
+        binding.keywords.text = RSSInfo.categories.toString()
+        binding.multilineText.text = convertedHTML
         /**
         binding.link.text = RSSInfo.link
         binding.description.text = RSSInfo.description
