@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:key="feedurl"
+        app:title="@string/newsfeed_title"
+        app:useSimpleSummaryProvider="true" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="displayimage"
+        android:title="@string/display_image_title"
+        app:summary="@string/summary_display_images" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="imagebgsync"
+        android:title="@string/download_images_title"
+        app:summary="@string/summary_download_images" />
+
+</PreferenceScreen>
