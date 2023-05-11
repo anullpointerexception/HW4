@@ -15,12 +15,12 @@ import com.example.homework3.data.Item
 import com.example.homework3.databinding.FirstNewsItemBinding
 import com.example.homework3.databinding.NewsItemBinding
 
-class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>(){
+class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>(){
     private val logTag = "NewsListAdapter"
 
 
     private var displayImage: Boolean = true
-    var rssList: List<Item> = emptyList()
+    private var rssList: List<Item> = emptyList()
     var onItemClickListener: ((Item) -> Unit)? = null
 
     fun setDisplayImage(displayImage: Boolean){
@@ -28,8 +28,8 @@ class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.
         notifyDataSetChanged()
     }
 
-    fun setRssList(rssList: List<Item>){
-        this.rssList = rssList
+    fun setRssList(newRssList: List<Item>){
+        this.rssList = newRssList
         notifyDataSetChanged()
     }
 
@@ -48,7 +48,6 @@ class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.
         holder.bindToNews(item)
         holder.itemView.setOnClickListener{ onItemClickListener?.invoke(item) }
         holder.setImageViewVisibility(displayImage)
-
     }
 
     override fun getItemCount(): Int{

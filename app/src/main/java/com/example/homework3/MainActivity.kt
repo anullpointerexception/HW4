@@ -38,8 +38,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val newsAdapter = NewsAdapter(emptyList(), this)
+        val newsAdapter = NewsAdapter(this)
         binding.rvNewsData.adapter = newsAdapter
+
 
         newsAdapter.onItemClickListener = { item ->
             Log.e(LOG_TAG, "ITEM CLICKED: $item")
@@ -52,10 +53,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         binding.btnLoadNews.setOnClickListener{
             binding.btnLoadNews.isEnabled = false
-            newsAdapter.rssList = emptyList()
             newListViewModel.loadData()
             binding.btnLoadNews.isEnabled = true
         }
+
+
 
         newListViewModel.rssList.observe(this) {newsList ->
             if(newsList.isNotEmpty()){
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         displayImage = sharedPreferences.getBoolean("displayimage", true)
-        updateAdapterDisplayImage()
+        newsAdapter.setDisplayImage(displayImage)
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
@@ -95,9 +97,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?){
-        if(SYNC_PREFERENCE == key){
-            val shouldSync = sharedPreferences?.getBoolean(SYNC_PREFERENCE, false) ?: false
-            Log.i(LOG_TAG, "shouldSync $shouldSync")
+        if(key == "feedurl") {
+            val newUrl = sharedPreferences?.getString(key, "") ?: ""
+            updateFeedUrl(newUrl)
+        } else if(key == "displayimage"){
+            val displayImage = sharedPreferences?.getBoolean(key, true) ?: true
+            val newsAdapter = binding.rvNewsData.adapter as? NewsAdapter
+            newsAdapter?.setDisplayImage(displayImage)
         }
     }
 

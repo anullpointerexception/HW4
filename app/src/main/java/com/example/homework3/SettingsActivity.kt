@@ -62,7 +62,9 @@ class SettingsActivity : AppCompatActivity(){
             if(key == "feedurl"){
                 val newUrl = sharedPreferences?.getString(key, "") ?: ""
                 val mainActivity = activity as? MainActivity
-                mainActivity?.updateFeedUrl(newUrl)
+                if(mainActivity != null && !mainActivity.isFinishing){
+                    mainActivity.updateFeedUrl(newUrl)
+                }
             }
         }
 
