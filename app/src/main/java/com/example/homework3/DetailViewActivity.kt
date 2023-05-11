@@ -1,5 +1,6 @@
 package com.example.homework3
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -48,6 +49,7 @@ class DetailViewActivity : AppCompatActivity() {
 
         if(!displayImage){
             binding.image.visibility = View.GONE
+            binding.title.setTextColor(Color.BLACK)
         }
     }
 }

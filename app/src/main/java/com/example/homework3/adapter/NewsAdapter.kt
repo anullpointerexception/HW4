@@ -1,11 +1,13 @@
 package com.example.homework3.adapter
 
 import android.content.Context
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.homework3.R
@@ -16,45 +18,37 @@ import com.example.homework3.databinding.NewsItemBinding
 class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>(){
     private val logTag = "NewsListAdapter"
 
-    var onItemClickListener: ((Item) -> Unit)? = null
 
     private var displayImage: Boolean = true
+    var rssList: List<Item> = emptyList()
+    var onItemClickListener: ((Item) -> Unit)? = null
 
     fun setDisplayImage(displayImage: Boolean){
         this.displayImage = displayImage
         notifyDataSetChanged()
     }
 
-    var rssList = rssDataList
-    set(value){
-        field = value
+    fun setRssList(rssList: List<Item>){
+        this.rssList = rssList
         notifyDataSetChanged()
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        return NewsViewHolder.create(parent, viewType)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = when(viewType){
+            R.layout.first_news_item -> FirstNewsItemBinding.inflate(inflater, parent, false)
+            else -> NewsItemBinding.inflate(inflater, parent, false)
+        }
+        return NewsViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        Log.e(logTag, "ON BIND VIEWHOLDER $position")
         val item = rssList[position]
         holder.bindToNews(item)
-        holder.itemView.setOnClickListener{ onItemClickListener?.invoke(item)}
+        holder.itemView.setOnClickListener{ onItemClickListener?.invoke(item) }
+        holder.setImageViewVisibility(displayImage)
 
-        if(displayImage){
-            val imageView = holder.itemView.findViewById<ImageView>(R.id.imageView2)
-            val imageView2 = holder.itemView.findViewById<ImageView>(R.id.imageView)
-            imageView?.visibility = View.VISIBLE
-            imageView2?.visibility = View.VISIBLE
-
-        } else {
-            val imageView = holder.itemView.findViewById<ImageView>(R.id.imageView2)
-            val imageView2 = holder.itemView.findViewById<ImageView>(R.id.imageView)
-
-            imageView?.visibility = View.GONE
-            imageView2?.visibility = View.GONE
-
-        }
     }
 
     override fun getItemCount(): Int{
@@ -86,14 +80,16 @@ class NewsAdapter(rssDataList: List<Item>, val context: Context) : RecyclerView.
 
         }
 
-        companion object {
-            fun create(parent: ViewGroup, viewType: Int): NewsViewHolder {
-                val inflater = LayoutInflater.from(parent.context)
-                val binding = when(viewType){
-                    R.layout.first_news_item -> FirstNewsItemBinding.inflate(inflater, parent, false)
-                    else -> NewsItemBinding.inflate(inflater, parent, false)
-                }
-                return NewsViewHolder(binding)
+        fun setImageViewVisibility(displayImage: Boolean) {
+            val imageView = itemView.findViewById<ImageView>(R.id.imageView2)
+            val imageView2 = itemView.findViewById<ImageView>(R.id.imageView)
+
+            if (displayImage) {
+                imageView?.visibility = View.VISIBLE
+                imageView2?.visibility = View.VISIBLE
+            } else {
+                imageView?.visibility = View.GONE
+                imageView2?.visibility = View.GONE
             }
         }
         /**

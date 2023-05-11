@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             startActivity(intent)
         }
 
+
+
         binding.btnLoadNews.setOnClickListener{
             binding.btnLoadNews.isEnabled = false
             newsAdapter.rssList = emptyList()
@@ -56,8 +58,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
 
         newListViewModel.rssList.observe(this) {newsList ->
-            newsAdapter.rssList = newsList
-
+            if(newsList.isNotEmpty()){
+                newsAdapter.setRssList(newsList)
+            }
         }
 
         newListViewModel.hasError.observe(this) { hasError->
@@ -79,6 +82,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     }
 
+    fun updateFeedUrl(newUrl: String){
+        newListViewModel.updateFeedUrl(newUrl)
+    }
+
     private fun updateAdapterDisplayImage(){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         displayImage = sharedPreferences.getBoolean("displayimage", true)
@@ -97,8 +104,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onResume(){
         super.onResume()
         updateAdapterDisplayImage()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .registerOnSharedPreferenceChangeListener(this)
     }
 
+    override fun onPause(){
+        super.onPause()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .registerOnSharedPreferenceChangeListener(this)
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -106,6 +120,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
@@ -115,7 +131,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 return true
             }
             R.id.reload_option -> {
-                println("Hellow from settings option")
+                println("Hellow from reload option")
                 return true
             }
         }

@@ -3,10 +3,10 @@ package com.example.homework3.data
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-
+// "https://www.engadget.com/rss.xml"
 class RSSLoader {
-    fun fetchRSS(): FetchRSSResult {
-        val urlConnection = URL("https://www.engadget.com/rss.xml")
+    fun fetchRSS(feedUrl: String): FetchRSSResult {
+        val urlConnection = URL(feedUrl)
             .openConnection() as HttpURLConnection
         return try{
             urlConnection.run {

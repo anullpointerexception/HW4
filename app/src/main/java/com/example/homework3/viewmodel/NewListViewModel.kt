@@ -24,22 +24,25 @@ class NewListViewModel : ViewModel() {
     private val _hasError = MutableLiveData(false)
     val hasError: LiveData<Boolean> = _hasError
 
+    private var feedUrl: String = "https://www.engadget.com/rss.xml"
+    // https://www.feedforall.com/sample.xml
+
     fun loadData(){
         viewModelScope.launch {
-            var rssResultList = fetchRSSResult()
+            var rssResultList = fetchRSSResult(feedUrl)
                 ?: return@launch
 
             if(rssResultList.isEmpty()){
-                rssResultList = fetchRSSResult()
+                rssResultList = fetchRSSResult(feedUrl)
                     ?: return@launch
             }
             _rssList.postValue(rssResultList)
         }
     }
 
-    private suspend fun fetchRSSResult(): List<Item>? {
+    private suspend fun fetchRSSResult(url: String): List<Item>? {
         val res = withContext(Dispatchers.IO){
-            rssLoader.fetchRSS()
+            rssLoader.fetchRSS(url)
         }
         return when(res){
             is Success -> {
@@ -58,6 +61,11 @@ class NewListViewModel : ViewModel() {
                 null
             }
         }
+    }
+
+    fun updateFeedUrl(newUrl: String){
+        feedUrl = newUrl
+        loadData()
     }
 
 }
