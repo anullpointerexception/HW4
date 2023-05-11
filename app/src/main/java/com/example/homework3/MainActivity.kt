@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 return true
             }
             R.id.reload_option -> {
-                println("Hellow from reload option")
+                newListViewModel.loadData()
                 return true
             }
         }

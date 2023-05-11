@@ -1,10 +1,13 @@
 package com.example.homework3
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.view.View
+import android.widget.Button
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.example.homework3.adapter.NewsAdapter
@@ -24,6 +27,8 @@ class DetailViewActivity : AppCompatActivity() {
 
         val RSSInfo = intent.getSerializableExtra("RSSInfo") as Item
 
+        val url = RSSInfo.link
+
         val htmlContent = RSSInfo.description
 
         val convertedHTML = if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N){
@@ -35,6 +40,10 @@ class DetailViewActivity : AppCompatActivity() {
         binding.title.text = RSSInfo.title
         binding.keywords.text = RSSInfo.categories.toString()
         binding.multilineText.text = convertedHTML
+
+        // supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
         /**
         binding.link.text = RSSInfo.link
         binding.description.text = RSSInfo.description
@@ -51,6 +60,12 @@ class DetailViewActivity : AppCompatActivity() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val displayImage = sharedPreferences.getBoolean("displayimage", true)
 
+        binding.openBrowserButton.setOnClickListener {
+            if(!url.isNullOrBlank()){
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            }
+        }
         if(!displayImage){
             binding.image.visibility = View.GONE
             binding.title.setTextColor(Color.BLACK)

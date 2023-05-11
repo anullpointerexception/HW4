@@ -1,9 +1,12 @@
 package com.example.homework3
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -28,7 +31,8 @@ class SettingsActivity : AppCompatActivity(){
                 .replace(R.id.settings, SettingsFragment())
                 .commit()
         }
-        // supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
 
         //val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         //sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
