@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.bumptech.glide.Glide
 import com.example.homework3.R
 import com.example.homework3.data.Item
 import com.example.homework3.databinding.FirstNewsItemBinding
@@ -40,7 +41,7 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
             R.layout.first_news_item -> FirstNewsItemBinding.inflate(inflater, parent, false)
             else -> NewsItemBinding.inflate(inflater, parent, false)
         }
-        return NewsViewHolder(binding)
+        return NewsViewHolder(binding, parent.context)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
@@ -63,16 +64,18 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
 
 
 
-    class NewsViewHolder(private val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root){
+    class NewsViewHolder(private val binding: ViewBinding, private val context: Context) : RecyclerView.ViewHolder(binding.root){
         fun bindToNews(item: Item){
             when(binding){
                 is NewsItemBinding -> {
                     binding.title.text = item.title
                     binding.author.text = item.creator
                     binding.date.text = item.pubDate.toString()
+                    Glide.with(context).load(item.mediaContent[0].toString()).into(binding.imageView2)
                 }
                 is FirstNewsItemBinding -> {
                     binding.title.text = item.title
+                    Glide.with(context).load(item.mediaContent[0].toString()).into(binding.imageView)
                 }
             }
 

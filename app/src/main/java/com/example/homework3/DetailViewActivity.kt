@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.View
 import androidx.preference.PreferenceManager
+import com.bumptech.glide.Glide
 import com.example.homework3.adapter.NewsAdapter
 import com.example.homework3.data.Item
 import com.example.homework3.databinding.ActivityDetailViewBinding
@@ -43,6 +44,9 @@ class DetailViewActivity : AppCompatActivity() {
         binding.categories.text = RSSInfo.categories.toString()
         // Image
         binding.mediacontent.text = RSSInfo.mediaContent.toString()**/
+        Glide.with(this).load(RSSInfo.mediaContent[0].toString()).into(binding.image)
+
+        println(RSSInfo.mediaContent[0].toString())
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val displayImage = sharedPreferences.getBoolean("displayimage", true)

@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:text="Title"
-            android:textColor="#FFF"
+            android:textColor="#000"
             android:padding="8dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
